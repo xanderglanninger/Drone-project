@@ -1,30 +1,28 @@
-const express = require("express");
+// Import necessary modules
+const express = require('express');
+const bodyParser = require('body-parser');
+
+// Initialize the express app
 const app = express();
-const fs = require("fs");
-const path = require("path");
-const port = process.env.PORT || 5000;
+const PORT = 5000;
 
+// Use body-parser to parse JSON data in requests
+app.use(bodyParser.json());
 
-const tempHtml = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
-app.use(express.json());
-
-app.get('/', function (req, res) {
-    res.send(tempHtml)
-})
-
+// Define the route to receive data from ESP32
 app.post('/data', (req, res) => {
-    const sensorData = req.body;
-    console.log('Received sensor data:', sensorData);
-    
-    // Here you can process the data (e.g., save to database)
-    
-    res.json({
-        status: 'success',
-        message: 'Data received successfully'
-    });
-res.send(sensorData);
+  const analogValue = req.body.Analog; // Extract the "Analog" field from the JSON data
+
+  if (analogValue !== undefined) {
+    console.log(`Received Analog Value: ${analogValue}`);
+    res.status(200).send('Data received successfully');
+  } else {
+    console.log('No Analog value found in request');
+    res.status(400).send('Bad Request: No Analog value found');
+  }
 });
 
-app.listen(port, "0.0.0.0", () => {
-    console.log(`Server running at http://localhost:${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
