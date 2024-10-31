@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
     res.send(tempHtml)
 })
 
-app.get('/data', (req, res) => {
+app.post('/data', (req, res) => {
     const sensorData = req.body;
     console.log('Received sensor data:', sensorData);
     
