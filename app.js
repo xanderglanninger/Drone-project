@@ -14,8 +14,7 @@ app.post('/data', (req, res) => {
   const analogValue = req.body.Analog; // Extract the "Analog" field from the JSON data
 
   if (analogValue !== undefined) {
-    console.log('Incomming Data');
-    console.log(`Received Analog Value: ${analogValue}`);
+    console.log(`Received New Analog Value: ${analogValue}`);
     res.status(200).send('Data received successfully');
   } else {
     console.log('No Analog value found in request');
